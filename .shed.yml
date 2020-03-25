@@ -1,0 +1,4 @@
+categories: [metabolomics]
+description: metabolic flux estimation based on [in]stationary labeling
+name: influx_si
+owner: sokol

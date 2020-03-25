@@ -1,0 +1,134 @@
+<?xml version="1.0"?>
+<macros>
+    <token name="@TOOL_VERSION@">5.0.3</token>
+    <xml name="requirements">
+        <requirements>
+            <requirement type="package" version="@TOOL_VERSION@">influx_si</requirement>
+        </requirements>
+    </xml>
+    <xml name="inputs">
+        <inputs>
+            <section name="file_load_section" title="submit FTBL files">
+                <param type="data" name="input_main" format="ftbl" multiple="True" label="main FTBL file(s)"/>
+                <param optional="true" type="data" name="input_aux" format="ftbl" multiple="True" label="auxiliary FTBL file(s)" help="for parallel experiments only"/>
+                <conditional name="cond_s_i">
+                    <param name="s_i" type="select" label="experiment type">
+                        <option value="_s" >stationary</option>
+                        <option value="_i" >instationary</option>
+                    </param>
+                    <when value="_s"/>
+                    <when value="_i">
+                        <param type="data" name="input_ti" format="txt,tsv" multiple="True"/>
+                    </when>
+                </conditional>
+            </section>
+        </inputs>
+    </xml>
+    <xml name="help">
+        <help><![CDATA[
+        Usage: influx_s [options] /path/to/FTBL_file1 [FTBL_file2 [...]]
+
+Optimize free fluxes and optionaly metabolite concentrations of a given static
+metabolic network defined in an FTBL file to fit 13C data provided in the same
+FTBL file.
+
+Options:
+  --version          show program's version number and exit
+  -h, --help         show this help message and exit
+  --noopt            no optimization, just use free parameters as is (after a
+                     projection on feasibility domain), to calculate dependent
+                     fluxes, cumomers, stats and so on
+  --noscale          no scaling factors to optimize => all scaling factors are
+                     assumed to be 1
+  --meth=METH        method for optimization, one of nlsic|BFGS|Nelder-Mead.
+                     Default: nlsic
+  --fullsys          calculate all cumomer set (not just the reduced one
+                     necesary to simulate measurements)
+  --emu              simulate labeling in EMU approach
+  --irand            ignore initial approximation for free parameters (free
+                     fluxes and metabolite concentrations) from the FTBL file
+                     or from a dedicated file (cf --fseries and --iseries
+                     option) and use random values drawn uniformly from [0,1]
+                     interval
+  --sens=SENS        sensitivity method: SENS can be 'mc[=N]', mc stands for
+                     Monte-Carlo. N is an optional number of Monte-Carlo
+                     simulations. Default for N: 10
+  --cupx=CUPX        upper limit for reverse fluxes. Must be in interval [0,
+                     1]. Default: 0.999
+  --cupn=CUPN        upper limit for net fluxes. Default: 1.e3
+  --cupp=CUPP        upper limit for metabolite pool. Default: 1.e5
+  --clownr=CLOWNR    lower limit for not reversible free and dependent fluxes.
+                     Zero value (default) means no lower limit
+  --cinout=CINOUT    lower limit for input/output free and dependent fluxes.
+                     Must be non negative. Default: 0
+  --clowp=CLOWP      lower limit for free metabolite pools. Must be positive.
+                     Default 1.e-8
+  --np=NP            When integer >= 1, it is a number of parallel
+                     subprocesses used in Monte-Carlo (MC) simulations or for
+                     multiple FTBL inputs. When NP is a float number between 0
+                     and 1, it gives a fraction of available cores (rounded to
+                     closest integer) to be used. Without this option or for
+                     NP=0, all available cores in a given node are used for MC
+                     simulations.
+  --ln               Least norm solution is used for increments during the
+                     non-linear iterations when Jacobian is rank deficient
+  --sln              Least norm of the solution of linearized problem (and not
+                     just of increments) is used when Jacobian is rank
+                     deficient
+  --tikhreg          Approximate least norm solution is used for increments
+                     during the non-linear iterations when Jacobian is rank
+                     deficient
+  --lim              The same as --ln but with a function limSolve::lsei()
+  --zc=ZC            Apply zero crossing strategy with non negative threshold
+                     for net fluxes
+  --ffguess          Don't use free/dependent flux definitions from FTBL
+                     file(s). Make an automatic guess.
+  --fseries=FSERIES  File name with free parameter values for multiple
+                     starting points. Default: '' (empty, i.e. only one
+                     starting point from the FTBL file is used)
+  --iseries=ISERIES  Indexes of starting points to use. Format: '1:10' -- use
+                     only first ten starting points; '1,3' -- use the the
+                     first and third starting points; '1:10,15,91:100' -- a
+                     mix of both formats is allowed. Default: '' (empty, i.e.
+                     all provided starting points are used)
+  --seed=SEED        Integer (preferably a prime integer) used for
+                     reproducible random number generating. It makes
+                     reproducible random starting points (--irand) but also
+                     Monte-Carlo simulations for sensitivity analysis.
+                     Default: none, i.e. current system value is used, so
+                     random drawing will be varying at each run.
+  --excl_outliers    This option takes an optional argument, a p-value between
+                     0 and 1 which is used to filter out measurement outliers.
+                     The filtering is based on Z statistics calculated on
+                     reduced residual distribution. Default: 0.01.
+  --nocalc           generate an R code but not execute it.
+  --addnoise         Add centered gaussian noise to simulated measurements
+                     written to _res.kvh file. SD of this noise is taken from
+                     FTBL file
+  --copy_doc         copy documentation directory in the current directory and
+                     exit. If ./doc exists, its content is silently owerriten.
+  --copy_test        copy test directory in the current directory and exit. If
+                     ./test exists, its content is silently owerriten.
+  --install_rdep     install R dependencies and exit.
+  --TIMEIT           developer option: measure cpu time or not
+  --prof             developer option: do time profiling or not
+  --tblimit=TBLIMIT  developer option: set trace back limit for python error
+                     messages
+
+    ]]></help>
+    </xml>
+    <xml name="citation">
+    <citations>
+        <citation type="bibtex">
+@misc{githubinflux,
+  author = {Sokol, Serguei},
+  year = {2020},
+  title = {influx_s},
+  publisher = {GitHub},
+  journal = {GitHub repository},
+  url = {https://github.com/sgsokol/influx},
+}</citation>
+        <citation type="doi">10.1093/bioinformatics/btr716</citation>
+    </citations>
+    </xml>
+</macros>

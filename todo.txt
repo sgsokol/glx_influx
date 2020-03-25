@@ -1,0 +1,11 @@
+# 2020-03-23 sokol@insa-toulouse.fr
+
+cases to put in galaxy :
+  - influx_s on one mono-ftbl -> several files, variable number (pdf or not etc)
+  - influx_s on several mono-ftbl
+  - influx_s on one prl-ftbl (many inputs, variable number)
+  - influx_s on several prl-ftbl
+  - influx_i on one mono-ftbl (two inputs: ftbl and data)
+  - influx_i on several mono-ftbl
+  - influx_i on one prl-ftbl (many inputs, variable number)
+  - influx_i on several prl-ftbl

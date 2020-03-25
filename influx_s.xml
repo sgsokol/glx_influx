@@ -1,0 +1,30 @@
+<tool id="influx_s" name="Estimate metabolic fluxes from stationary labeling" version="0.1.0" python_template_version="3.5">
+    <description>Metabolic flux estimation from labeling experiments</description>
+
+    <macros>
+        <import>macros.xml</import>
+    </macros>
+
+    <expand macro="requirements"/>
+    <command detect_errors="exit_code"><![CDATA[
+       sh -x '$__tool_directory__/wrap1.sh'
+       #for $in_m in $input_main:
+         '$in_m' '$in_m.name'
+       #end for
+       '$output1'
+    ]]></command>
+    <expand macro="inputs" />
+    <outputs>
+        <data name="output1" format="zip" />
+    </outputs>
+    <tests>
+       <test>
+              <param name="input_main" value="e_coli.ftbl"/>
+              <!--param name="input_aux" value=""/-->
+              <param name="s_i" value="_s"/>
+              <output name="output1" file="tmp.zip" compare="sim_size" delta="30000"/>
+       </test>
+    </tests>
+    <expand macro="help" />
+    <expand macro="citation" />
+</tool>
