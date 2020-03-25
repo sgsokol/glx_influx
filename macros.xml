@@ -8,20 +8,20 @@
     </xml>
     <xml name="inputs">
         <inputs>
-            <section name="file_load_section" title="submit FTBL files">
+            <!--section name="file_load_section" title="submit FTBL files"-->
                 <param type="data" name="input_main" format="ftbl" multiple="True" label="main FTBL file(s)"/>
                 <param optional="true" type="data" name="input_aux" format="ftbl" multiple="True" label="auxiliary FTBL file(s)" help="for parallel experiments only"/>
-                <conditional name="cond_s_i">
-                    <param name="s_i" type="select" label="experiment type">
-                        <option value="_s" >stationary</option>
-                        <option value="_i" >instationary</option>
+                <conditional name="si">
+                    <param name="s_i" type="select" label="labeling type">
+                        <option value="s">stationary</option>
+                        <option value="i">instationary</option>
                     </param>
-                    <when value="_s"/>
-                    <when value="_i">
+                    <when value="s"/>
+                    <when value="i">
                         <param type="data" name="input_ti" format="txt,tsv" multiple="True"/>
                     </when>
                 </conditional>
-            </section>
+            <!--/section-->
         </inputs>
     </xml>
     <xml name="help">

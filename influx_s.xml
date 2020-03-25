@@ -6,12 +6,22 @@
     </macros>
 
     <expand macro="requirements"/>
+    <!--
+#silent sys.stderr.write("!!!! Cheetah Template Variables !!!!\n")
+#for k,v in $searchList[2].items()
+#silent   sys.stderr.write(" %s = %s\n" % (str(k), str(v) ))
+#end for
+    -->
     <command detect_errors="exit_code"><![CDATA[
-       sh -x '$__tool_directory__/wrap1.sh'
        #for $in_m in $input_main:
-         '$in_m' '$in_m.name'
+         mv '$in_m' '$in_m.name';
        #end for
-       '$output1'
+       
+       influx_$si.s_i '${"' '".join([str($in_m.name) for $in_m in $input_main])}';
+       
+       zip tmp.zip `ls | grep -v conda_activate.log`;
+       
+       mv tmp.zip '$output1'
     ]]></command>
     <expand macro="inputs" />
     <outputs>
@@ -21,7 +31,9 @@
        <test>
               <param name="input_main" value="e_coli.ftbl"/>
               <!--param name="input_aux" value=""/-->
-              <param name="s_i" value="_s"/>
+              <conditional name="si">
+                     <param name="s_i" value="s"/>
+              </conditional>
               <output name="output1" file="tmp.zip" compare="sim_size" delta="30000"/>
        </test>
     </tests>
