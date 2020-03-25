@@ -16,6 +16,16 @@
        #for $in_m in $input_main:
          mv '$in_m' '$in_m.name';
        #end for
+       #if $input_aux:
+         #for $in_a in $input_aux:
+           mv '$in_a' '$in_a.name';
+         #end for
+       #end if
+       #if $si.s_i == 'i':
+         #for $in_t in $input_ti:
+           mv '$in_t' '$in_t.name';
+         #end for
+       #end if
        
        influx_$si.s_i '${"' '".join([str($in_m.name) for $in_m in $input_main])}';
        
@@ -30,11 +40,25 @@
     <tests>
        <test>
               <param name="input_main" value="e_coli.ftbl"/>
-              <!--param name="input_aux" value=""/-->
               <conditional name="si">
                      <param name="s_i" value="s"/>
               </conditional>
               <output name="output1" file="tmp.zip" compare="sim_size" delta="30000"/>
+       </test>
+       <test>
+              <param name="input_main" value="e_coli.ftbl,e_coli_growth.ftbl"/>
+              <conditional name="si">
+                     <param name="s_i" value="s"/>
+              </conditional>
+              <output name="output1" file="tmp2.zip" compare="sim_size" delta="60000"/>
+       </test>
+       <test>
+              <param name="input_main" value="e_coli_i.ftbl"/>
+              <conditional name="si">
+                     <param name="s_i" value="i"/>
+                     <param name="input_ti" value="e_coli_msen.txt"/>
+              </conditional>
+              <output name="output1" file="tmpi.zip" compare="sim_size" delta="60000"/>
        </test>
     </tests>
     <expand macro="help" />
