@@ -60,6 +60,14 @@
               </conditional>
               <output name="output1" file="tmpi.zip" compare="sim_size" delta="60000"/>
        </test>
+       <test>
+              <param name="input_main" value="e_coli_1-Glc_exact.ftbl"/>
+              <param name="input_aux" value="e_coli_U-Glc_exact.ftbl"/>
+              <conditional name="si">
+                     <param name="s_i" value="s"/>
+              </conditional>
+              <output name="output1" file="tmpprl.zip" compare="sim_size" delta="40000"/>
+       </test>
     </tests>
     <expand macro="help" />
     <expand macro="citation" />
