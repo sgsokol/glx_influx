@@ -1,5 +1,5 @@
-<tool id="influx_s" name="Estimate metabolic fluxes from stationary labeling" version="0.1.0" python_template_version="3.5">
-    <description>Metabolic flux estimation from labeling experiments</description>
+<tool id="influx_s" name="influx_si" version="0.2.0" python_template_version="3.5">
+    <description>metabolic flux analysis</description>
 
     <macros>
         <import>macros.xml</import>
@@ -29,13 +29,18 @@
        
        influx_$si.s_i '${"' '".join([str($in_m.name) for $in_m in $input_main])}';
        
-       zip tmp.zip `ls | grep -v conda_activate.log`;
+       mkdir outdir;
        
-       mv tmp.zip '$output1'
+       #for $in_m in $input_main:
+         n="$in_m.name"; for f in *"\${n/.ftbl/}"*; do ([ -e "\$f" ] && mv "\$f" outdir/) || [ true ] ; done;
+       #end for
     ]]></command>
     <expand macro="inputs" />
     <outputs>
-        <data name="output1" format="zip" />
+       <collection name="influx_si_output" type="list" label="influx_si result">
+              <discover_datasets pattern="(?P&lt;name&gt;.*)" directory="outdir" visible="true"/>
+       </collection>
+       <!--data name="output1" format="zip" /-->
     </outputs>
     <tests>
        <test>
@@ -43,14 +48,18 @@
               <conditional name="si">
                      <param name="s_i" value="s"/>
               </conditional>
-              <output name="output1" file="tmp.zip" compare="sim_size" delta="30000"/>
+              <output_collection name="influx_si_output" type="list">
+                <element name="e_coli.log" file="e_coli.log" compare="sim_size" delta="100"/>
+              </output_collection>
        </test>
        <test>
               <param name="input_main" value="e_coli.ftbl,e_coli_growth.ftbl"/>
               <conditional name="si">
                      <param name="s_i" value="s"/>
               </conditional>
-              <output name="output1" file="tmp2.zip" compare="sim_size" delta="60000"/>
+              <output_collection name="influx_si_output" type="list">
+                <element name="e_coli_growth.log" file="e_coli_growth.log" compare="sim_size" delta="100"/>
+              </output_collection>
        </test>
        <test>
               <param name="input_main" value="e_coli_i.ftbl"/>
@@ -58,7 +67,9 @@
                      <param name="s_i" value="i"/>
                      <param name="input_ti" value="e_coli_msen.txt"/>
               </conditional>
-              <output name="output1" file="tmpi.zip" compare="sim_size" delta="60000"/>
+              <output_collection name="influx_si_output" type="list">
+                <element name="e_coli_i.log" file="e_coli_i.log" compare="sim_size" delta="100"/>
+              </output_collection>
        </test>
        <test>
               <param name="input_main" value="e_coli_1-Glc_exact.ftbl"/>
@@ -66,7 +77,9 @@
               <conditional name="si">
                      <param name="s_i" value="s"/>
               </conditional>
-              <output name="output1" file="tmpprl.zip" compare="sim_size" delta="40000"/>
+              <output_collection name="influx_si_output" type="list">
+                <element name="e_coli_1-Glc_exact.log" file="e_coli_1-Glc_exact.log" compare="sim_size" delta="100"/>
+              </output_collection>
        </test>
     </tests>
     <expand macro="help" />
