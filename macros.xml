@@ -9,8 +9,8 @@
     <xml name="inputs">
         <inputs>
             <!--section name="file_load_section" title="submit FTBL files"-->
-                <param type="data" name="input_main" format="ftbl" multiple="True" label="main FTBL: network+data"/>
-                <param optional="true" type="data" name="input_aux" format="ftbl" multiple="True" label="auxiliary FTBL: data only (for parallel experiments)"/>
+                <param type="data" name="input_main" format="ftbl" multiple="True" label="main FTBL(s): network+data"/>
+                <param optional="true" type="data" name="input_aux" format="ftbl" multiple="True" label="auxiliary FTBL(s): data only (for parallel experiments)"/>
                 <conditional name="si">
                     <param name="s_i" type="select" label="labeling type">
                         <option value="s">stationary</option>

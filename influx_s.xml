@@ -1,4 +1,4 @@
-<tool id="influx_s" name="influx_si" version="0.2.0" python_template_version="3.5">
+<tool id="influx_s" name="influx_si" version="0.3.0" python_template_version="3.5">
     <description>metabolic flux analysis</description>
 
     <macros>
@@ -13,32 +13,33 @@
 #end for
     -->
     <command detect_errors="exit_code"><![CDATA[
-       #for $in_m in $input_main:
-         mv '$in_m' '$in_m.name';
-       #end for
-       #if $input_aux:
-         #for $in_a in $input_aux:
-           mv '$in_a' '$in_a.name';
-         #end for
-       #end if
+       #set $inp_all = [$input_main, ($input_aux if $input_aux else [])]
        #if $si.s_i == 'i':
-         #for $in_t in $input_ti:
-           mv '$in_t' '$in_t.name';
-         #end for
+         #silent $inp_all.append($input_ti)
        #end if
+       #for $inp in $inp_all:
+         #for $i in $inp:
+           mv '$i' '$i.name';
+         #end for
+       #end for
        
        influx_$si.s_i '${"' '".join([str($in_m.name) for $in_m in $input_main])}';
        
        mkdir outdir;
        
-       #for $in_m in $input_main:
-         n="$in_m.name"; for f in *"\${n/.ftbl/}"*; do ([ -e "\$f" ] && mv "\$f" outdir/) || [ true ] ; done;
+       #for $inp in $inp_all:
+         #for $i in $inp:
+           n="$i.name"; for f in *"\${n/.ftbl/}"*; do ([ -e "\$f" ] && mv "\$f" outdir/) || [ true ] ; done;
+         #end for
        #end for
+       
+       ([ -e parallel.R ] && mv parallel.R outdir/) || [ true ];
+       
     ]]></command>
     <expand macro="inputs" />
     <outputs>
        <collection name="influx_si_output" type="list" label="influx_si result">
-              <discover_datasets pattern="(?P&lt;name&gt;.*)" directory="outdir" visible="true"/>
+              <discover_datasets pattern="(?P&lt;name&gt;.*)" directory="outdir" visible="false"/>
        </collection>
        <!--data name="output1" format="zip" /-->
     </outputs>
