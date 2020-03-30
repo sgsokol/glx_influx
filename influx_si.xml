@@ -1,4 +1,4 @@
-<tool id="influx_s" name="influx_si" version="0.4.0" python_template_version="3.5">
+<tool id="influx_si" name="influx_si" version="0.5.0" python_template_version="3.5">
     <description>metabolic flux analysis</description>
     <macros>
         <import>macros.xml</import>
@@ -10,6 +10,7 @@
 #silent   sys.stderr.write(" %s = %s\n" % (str(k), str(v) ))
 #end for
     -->
+    <version_command>influx_s --version</version_command>
     <command detect_errors="exit_code"><![CDATA[
        #set $inp_all = [$input_main, ($input_aux if $input_aux else [])]
        #if $si.s_i == 'i':
@@ -24,13 +25,18 @@
          #end for
        #end for
        
-       influx_$si.s_i '${"' '".join([str($in_m.name) for $in_m in $input_main])}';
+       influx_$si.s_i
+         @COMMAND_OPT@
+         #if '$si.s_i' == 'i' and $time_order:
+           --time_order='$time_order'
+         #end if
+         '${"' '".join([str($in_m.name) for $in_m in $input_main])}';
        
     ]]></command>
     <expand macro="inputs" />
     <outputs>
        <collection name="influx_si_output" type="list" label="influx_${si.s_i}_on_${on_string}">
-              <discover_datasets pattern="(?P&lt;name&gt;.*)" directory="outdir" visible="false"/>
+              <discover_datasets pattern="__name__" directory="outdir" visible="false"/>
        </collection>
     </outputs>
     <tests>

@@ -1,0 +1,105 @@
+  #if $opt.version:
+    --version
+  #end if
+  #if $opt.help:
+    --help
+  #end if
+  #if $opt.noopt:
+    --noopt
+  #end if
+  #if $opt.noscale:
+    --noscale
+  #end if
+  #if $opt.meth:
+    --meth='$opt.meth'
+  #end if
+  #if $opt.fullsys:
+    --fullsys
+  #end if
+  #if $opt.emu:
+    --emu
+  #end if
+  #if $opt.irand:
+    --irand
+  #end if
+  #if $opt.sens:
+    --sens='$opt.sens'
+  #end if
+  #if $opt.cupx:
+    --cupx='$opt.cupx'
+  #end if
+  #if $opt.cupn:
+    --cupn='$opt.cupn'
+  #end if
+  #if $opt.cupp:
+    --cupp='$opt.cupp'
+  #end if
+  #if $opt.clownr:
+    --clownr='$opt.clownr'
+  #end if
+  #if $opt.cinout:
+    --cinout='$opt.cinout'
+  #end if
+  #if $opt.clowp:
+    --clowp='$opt.clowp'
+  #end if
+  #if $opt.np:
+    --np='$opt.np'
+  #end if
+  #if $opt.ln:
+    --ln
+  #end if
+  #if $opt.sln:
+    --sln
+  #end if
+  #if $opt.tikhreg:
+    --tikhreg
+  #end if
+  #if $opt.lim:
+    --lim
+  #end if
+  #if $opt.zc:
+    --zc='$opt.zc'
+  #end if
+  #if $opt.ffguess:
+    --ffguess
+  #end if
+  #if $opt.fseries:
+    --fseries='$opt.fseries'
+  #end if
+  #if $opt.iseries:
+    --iseries='$opt.iseries'
+  #end if
+  #if $opt.seed:
+    --seed='$opt.seed'
+  #end if
+  #if $opt.excl_outliers:
+    --excl_outliers
+  #end if
+  #if $opt.nocalc:
+    --nocalc
+  #end if
+  #if $opt.addnoise:
+    --addnoise
+  #end if
+  #if $opt.time_order:
+    --time_order='$opt.time_order'
+  #end if
+  #if $opt.copy_doc:
+    --copy_doc
+  #end if
+  #if $opt.copy_test:
+    --copy_test
+  #end if
+  #if $opt.install_rdep:
+    --install_rdep
+  #end if
+  #if $opt.TIMEIT:
+    --TIMEIT
+  #end if
+  #if $opt.prof:
+    --prof
+  #end if
+  #if $opt.tblimit:
+    --tblimit='$opt.tblimit'
+  #end if

@@ -42,4 +42,9 @@ planemo l
 # test in galaxy
 planemo t
 
+# put current version in testshedtool
+planemo shed_update --check_diff --shed_target testtoolshed
 
+# produce a draft for <param ...> section
+# uncomment opt2param() call in influx_s.py
+~/dev/sysbio/ftbl2sys/influx_si/bin/influx_i.py > draft_param.xml 2> draft_command.xml
