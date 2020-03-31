@@ -1,9 +1,9 @@
-<tool id="influx_si" name="influx_si" version="0.5.0" python_template_version="3.5">
+<tool id="influx_si" name="influx_si" version="0.6.0" python_template_version="3.5">
     <description>metabolic flux analysis</description>
     <macros>
         <import>macros.xml</import>
     </macros>
-    <expand macro="requirements"/>
+    <expand macro="requirements" />
     <!--
 #silent sys.stderr.write("!!!! Cheetah Template Variables !!!!\n")
 #for k,v in $searchList[2].items()
@@ -12,9 +12,9 @@
     -->
     <version_command>influx_s --version</version_command>
     <command detect_errors="exit_code"><![CDATA[
-       #set $inp_all = [$input_main, ($input_aux if $input_aux else [])]
+       #set $inp_all = [$input_main, ($prlexp.input_aux if $prlexp.input_aux else [])]
        #if $si.s_i == 'i':
-         #silent $inp_all.append($input_ti)
+         #silent $inp_all.append($si.input_ti)
        #end if
 
        mkdir outdir && cd outdir;
@@ -27,55 +27,57 @@
        
        influx_$si.s_i
          @COMMAND_OPT@
-         #if '$si.s_i' == 'i' and $time_order:
-           --time_order='$time_order'
+         #if $si.s_i == 'i' and $si.time_order:
+           --time_order='$si.time_order'
          #end if
-         '${"' '".join([str($in_m.name) for $in_m in $input_main])}';
+         '${"' '".join([str($in_m.name) for $in_m in $input_main])}'
+         > influx_${si.s_i}.stdout 2>influx_${si.s_i}.stderr ;
        
     ]]></command>
     <expand macro="inputs" />
     <outputs>
        <collection name="influx_si_output" type="list" label="influx_${si.s_i}_on_${on_string}">
-              <discover_datasets pattern="__name__" directory="outdir" visible="false"/>
+              <discover_datasets pattern="__name__" directory="outdir" visible="false" />
        </collection>
     </outputs>
     <tests>
        <test>
-              <param name="input_main" value="e_coli.ftbl"/>
+              <param name="input_main" value="e_coli.ftbl" />
               <conditional name="si">
-                     <param name="s_i" value="s"/>
+                     <param name="s_i" value="s" />
               </conditional>
               <output_collection name="influx_si_output" type="list">
-                <element name="e_coli.log" file="e_coli.log" compare="sim_size" delta="100"/>
+                <element name="e_coli.log" file="e_coli.log" compare="sim_size" delta="100" />
               </output_collection>
        </test>
        <test>
-              <param name="input_main" value="e_coli.ftbl,e_coli_growth.ftbl"/>
+              <param name="input_main" value="e_coli.ftbl,e_coli_growth.ftbl" />
               <conditional name="si">
-                     <param name="s_i" value="s"/>
+                     <param name="s_i" value="s" />
               </conditional>
               <output_collection name="influx_si_output" type="list">
-                <element name="e_coli_growth.log" file="e_coli_growth.log" compare="sim_size" delta="100"/>
+                <element name="e_coli_growth.log" file="e_coli_growth.log" compare="sim_size" delta="100" />
               </output_collection>
        </test>
        <test>
-              <param name="input_main" value="e_coli_i.ftbl"/>
+              <param name="input_main" value="e_coli_i.ftbl" />
               <conditional name="si">
-                     <param name="s_i" value="i"/>
-                     <param name="input_ti" value="e_coli_msen.txt"/>
+                     <param name="s_i" value="i" />
+                     <param name="input_ti" value="e_coli_msen.txt" />
+                     <!--param name="time_order" value="1,2" /--> <!--How to pass single value with comma in it?-->
               </conditional>
               <output_collection name="influx_si_output" type="list">
-                <element name="e_coli_i.log" file="e_coli_i.log" compare="sim_size" delta="100"/>
+                <element name="e_coli_i.log" file="e_coli_i.log" compare="sim_size" delta="100" />
               </output_collection>
        </test>
        <test>
-              <param name="input_main" value="e_coli_1-Glc_exact.ftbl"/>
-              <param name="input_aux" value="e_coli_U-Glc_exact.ftbl"/>
+              <param name="input_main" value="e_coli_1-Glc_exact.ftbl" />
+              <param name="input_aux" value="e_coli_U-Glc_exact.ftbl" />
               <conditional name="si">
-                     <param name="s_i" value="s"/>
+                     <param name="s_i" value="s" />
               </conditional>
               <output_collection name="influx_si_output" type="list">
-                <element name="e_coli_1-Glc_exact.log" file="e_coli_1-Glc_exact.log" compare="sim_size" delta="100"/>
+                <element name="e_coli_1-Glc_exact.log" file="e_coli_1-Glc_exact.log" compare="sim_size" delta="100" />
               </output_collection>
        </test>
     </tests>
