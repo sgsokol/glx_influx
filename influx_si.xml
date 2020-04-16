@@ -1,4 +1,4 @@
-<tool id="influx_si" name="influx_si" version="0.7.0+galaxy0" python_template_version="3.5">
+<tool id="influx_si" name="influx_si" version="0.8.0+galaxy0" python_template_version="3.5">
     <description>metabolic flux analysis</description>
     <macros>
         <import>macros.xml</import>
@@ -33,7 +33,7 @@
          '${"' '".join([str($in_m.name) for $in_m in $input_main])}'
          > 'influx_${si.s_i}.stdout.txt' 2>'influx_${si.s_i}.stderr.txt' ;
        
-       for f in *.log *.err; do mv -f "\$f" "\$f".txt || true; done;
+       for f in *.ftbl *.log *.err *.R *.kvh; do mv -f "\$f" "\$f".txt || true; done;
        
        for f in *.pdf; do [ -e "\$f" ] && mv -f "\$f" "\$f".pdf || true; done;
        
@@ -42,7 +42,7 @@
     <expand macro="inputs" />
     <outputs>
        <collection name="influx_si_output" type="list" label="influx_${si.s_i}_on_${on_string}">
-              <discover_datasets pattern="__name_and_ext__" directory="outdir" visible="false" recurse="true"/>
+              <discover_datasets pattern="__name_and_ext__" directory="outdir" visible="false"/>
      </collection>
     </outputs>
     <tests>

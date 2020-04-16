@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <macros>
-    <token name="@TOOL_VERSION@">5.0.3</token>
+    <token name="@TOOL_VERSION@">5.1.0</token>
     <token name="@COMMAND_OPT@"><![CDATA[
   #if $opt.noopt:
     --noopt

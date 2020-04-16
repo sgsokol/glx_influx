@@ -707,5 +707,5 @@ OPTIONS
 	//optctrl_trace	3 // BFGS
 	//optctrl_reltol	1.e-10 // BFGS
 	//optctrl_maxit	1000 // BFGS
-	posttreat_R	save_minenv.R
+	posttreat_R	plot_smeas.R
 
