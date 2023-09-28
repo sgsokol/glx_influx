@@ -10,7 +10,7 @@
 ---------------------------------------------------
     </token>
     <token name="@TOOL_VERSION@">7.0</token>
-    <token name="@VERSION_SUFFIX@">2</token>
+    <token name="@VERSION_SUFFIX@">3</token>
     <token name="@COMMAND_OPT@"><![CDATA[
   #if $opt.noopt:
     --noopt
@@ -107,11 +107,6 @@
   #end if
 ]]>
     </token>
-    <xml name="requirements">
-        <requirements>
-            <requirement type="package" version="@TOOL_VERSION@">influx_si</requirement>
-        </requirements>
-    </xml>
     <xml name="inputs">
         <inputs>
             <param type="data" format="zip" name="input_main" multiple="true" label="At least one MTF collection (.netw, .miso, ...)"/>

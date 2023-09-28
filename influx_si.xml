@@ -5,6 +5,9 @@
     <macros>
         <import>macros.xml</import>
     </macros>
+    <requirements>
+        <requirement type="package" version="@TOOL_VERSION@">influx_si</requirement>
+    </requirements>
     <command detect_errors="exit_code"><![CDATA[  
       
        mkdir outdir;
