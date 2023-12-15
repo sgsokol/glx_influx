@@ -12,7 +12,7 @@ If, in your `.opt` file, you have requested plotting information (`plot_smeas.R`
 
 For detailed documentation about `influx_si` and accompanying tools see https://influx-si.readthedocs.io
 
-For getting a standalone version of `influx_si`, you can install it e.g. with `conda <https://docs.conda.io/en/latest/miniconda.html>`_ package manager: ::
+For getting a standalone version of `influx_si <https://anaconda.org/bioconda/influx_si>`_, you can install it e.g. with `conda <https://docs.conda.io/en/latest/miniconda.html>`_ package manager: ::
 
  conda install -c conda-forge -c bioconda influx_si
 
